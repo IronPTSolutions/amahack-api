@@ -1,34 +1,34 @@
-const jwt = require('jsonwebtoken')
-const createError = require('http-errors')
+const jwt = require("jsonwebtoken");
+const createError = require("http-errors");
 
 module.exports.isAuthenticated = (req, res, next) => {
   // Get Authorization header
-  const authHeader = req.header('Authorization')
+  const authHeader = req.header("Authorization");
 
   if (authHeader) {
     // Check protocol
-    const authProtocol = authHeader.split(' ')[0]
+    const [authProtocol, token] = authHeader.split(" ");
 
-    if (authProtocol === 'Bearer') {
+    if (authProtocol === "Bearer") {
       // Verify token - if not correct it will throw exception
       jwt.verify(
-        authHeader ? authHeader.split(' ')[1] : '',
-        process.env.JWT_SECRET,
+        token || "",
+        process.env.JWT_SECRET || "changeme",
         (error, decoded) => {
           if (error) {
-            next(error)
+            next(error);
           }
-    
+
           if (decoded) {
-            req.currentUser = decoded.id
-            next(error)
+            req.currentUser = decoded.id;
+            next(error);
           }
         }
-      )
+      );
     } else {
-      next(createError(401))
+      next(createError(401));
     }
   } else {
-    next(createError(401))
+    next(createError(401));
   }
-}
+};
