@@ -16,6 +16,6 @@ router.get('/products', productsController.list)
 router.post('/products', authMiddleware.isAuthenticated, productsController.create)
 router.get('/products/:id', productsController.get)
 // router.delete('/products/:id', productsController.delete)
-// router.put('/products/:id', productsController.update)
+router.put('/products/:id', authMiddleware.isAuthenticated, productsController.update)
 
 module.exports = router;
