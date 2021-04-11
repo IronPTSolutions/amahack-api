@@ -7,13 +7,13 @@ module.exports.isAuthenticated = (req, res, next) => {
 
   if (authHeader) {
     // Check protocol
-    const authProtocol = authHeader.split(' ')[0]
+    const [authProtocol, token] = authHeader.split(' ')
 
     if (authProtocol === 'Bearer') {
       // Verify token - if not correct it will throw exception
       jwt.verify(
-        authHeader ? authHeader.split(' ')[1] : '',
-        process.env.JWT_SECRET,
+        token,
+        process.env.JWT_SECRET || "changeme",
         (error, decoded) => {
           if (error) {
             next(error)
