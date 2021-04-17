@@ -29,6 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+  console.log("ola k ase");
   if (error instanceof mongoose.Error.ValidationError) error = createError(400, error)
   else if (error instanceof mongoose.Error.CastError) error = createError(404, 'Resource not found')
   else if (error instanceof jwt.JsonWebTokenError) error = createError(401, error)
